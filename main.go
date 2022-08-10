@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
-	"os/exec"
-	"runtime"
 	"time"
 	"whoacamel/art"
 	"whoacamel/game"
@@ -14,7 +12,8 @@ import (
 func main() {
 
 	// Load all of our stuff
-	fmt.Println("Loading stuff...")
+	fmt.Printf("Loading stuff...\n")
+	beginTime := time.Now()
 
 	textArt := art.LoadTexts()
 	bgArt := art.LoadBgs()
@@ -25,27 +24,24 @@ func main() {
 	// Set randomizer seed
 	rand.Seed(time.Now().UnixMilli())
 
-	clearScreen()
+	loadTime := time.Since(beginTime).String()
+	fmt.Printf("Loaded everything in %s\n", loadTime)
+	game.ClearScreen()
 
 	// Say our "welcome"
 	art.PrintArt(textArt["title"])
-	fmt.Println("...is what you'll be saying as you cruise through this game!")
-	fmt.Println("Well, 'cruise' might be too strong of a word... oh well.")
+	fmt.Printf("...is what you'll be saying as you cruise through this game!\n")
+	fmt.Printf("Well, 'cruise' might be too strong of a word... oh well.\n\n")
 
-	// TODO allow for miles input and difficulty (implemented later down the line, but may as well have it in the system)
+	fmt.Printf("1. Start Your Trek!\n")
+	fmt.Printf("2. Quit To OS, Before You Even Began (boooo...)!\n")
 
-	// Drum roll please...
-	game.RunGame()
-}
-
-func clearScreen() {
-
-	cmd := exec.Command("clear")
-	if runtime.GOOS == "windows" {
-		cmd = exec.Command("cmd", "/c", "cls")
+	menuChoice := game.TakeAndValidateInt(1, 2)
+	if menuChoice == 1 {
+		// Drum roll please...
+		game.RunGame(textArt, bgArt)
+	} else {
+		fmt.Printf("In the dark vastness of the terminal, I find solace.\n")
+		os.Exit(0)
 	}
-
-	// Ensure that the output of the cmd goes to Go's output
-	cmd.Stdout = os.Stdout
-	cmd.Run()
 }

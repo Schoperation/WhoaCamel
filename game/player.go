@@ -41,6 +41,7 @@ type BasePlayer struct {
 	Thirst        int // 0 not thirsty, 100 so parched everything looks liquid
 	Energy        int // 100 not tired, 0 so tired everything looks like tires... what?
 	Inventory     []Item
+	Money         float32
 	Camel         Camel
 	MilesTraveled int
 }
@@ -56,6 +57,14 @@ func NewBasePlayer() *BasePlayer {
 		5, // Max number of sips
 	}
 
+	// And some silk
+	var silk = Item{
+		"Silk",
+		"Beats any fabric back home any day. Every blink is a missed opportunity to gaze at its intricate beauty.",
+		10, // Amount
+		0,  // Nada
+	}
+
 	// And a camel
 	var camel = Camel{
 		".",
@@ -68,7 +77,8 @@ func NewBasePlayer() *BasePlayer {
 	return &BasePlayer{
 		0,
 		100,
-		[]Item{canteen},
+		[]Item{canteen, silk},
+		10.00,
 		camel,
 		0,
 	}
@@ -81,7 +91,7 @@ func (p *BasePlayer) ShowWarnings() {
 
 // Prints out their inventory.
 func (p *BasePlayer) ShowInventory() {
-	fmt.Printf("You look into your pouch and, other than stray grains of sand, you find...\n")
+	fmt.Printf("You look into your pouch and, other than stray grains of sand, you find...\n\n")
 	for i, item := range p.Inventory {
 		fmt.Printf("#%d: %s -- %s\n", i, item.Name, item.Desc)
 	}

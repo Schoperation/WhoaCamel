@@ -21,6 +21,9 @@ func LoadTexts() map[string][MAX_LINES][1]string {
 
 	// Loading all of the texts onto the map...
 	art["title"] = loadArtFromFile("title", "text")
+	art["treklength"] = loadArtFromFile("treklength", "text")
+	art["difficulty"] = loadArtFromFile("difficulty", "text")
+	art["camel"] = loadArtFromFile("camel", "text")
 
 	return art
 }
